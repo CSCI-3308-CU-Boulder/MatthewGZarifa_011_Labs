@@ -1,0 +1,79 @@
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>docker run -dt -v postgres-data:/var/lib/postgresql/data -e POSTGRES_PASSWORD=password postgres:latest
+Unable to find image 'postgres:latest' locally
+latest: Pulling from library/postgres
+a076a628af6f: Pull complete
+d54fa0e0eb76: Pull complete
+8950a7ea6876: Pull complete
+1cc02b1df09e: Pull complete
+06f548e51228: Pull complete
+74665692d4ea: Pull complete
+235e34eb13ab: Pull complete
+4ad7ef5e2e79: Pull complete
+76670339b0f8: Pull complete
+496fa0539f99: Pull complete
+f32ecbdf3b52: Pull complete
+7536b8fe81ac: Pull complete
+b147719f22c0: Pull complete
+22f2f0aa94ae: Pull complete
+Digest: sha256:c32f3f8364d79f71958c9ada74c43c2033d7e13d9d5fc21d3ba89322e6559c9d
+Status: Downloaded newer image for postgres:latest
+411be2cb0c267bbb0637cd8a9c20604815d0458927f0b38936d864bbbd44db5d
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>docker ps
+CONTAINER ID   IMAGE             COMMAND                  CREATED         STATUS         PORTS      NAMES
+411be2cb0c26   postgres:latest   "docker-entrypoint.s…"   5 seconds ago   Up 3 seconds   5432/tcp   reverent_poincare
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>docker exec -it 411be2cb0c26 bash
+root@411be2cb0c26:/# psql -h localhost -U postgres
+psql (13.1 (Debian 13.1-1.pgdg100+1))
+Type "help" for help.
+
+postgres=# create database practicedb;
+CREATE DATABASE
+postgres=# \c practicedb;
+You are now connected to database "practicedb" as user "postgres".
+practicedb=# create table if not exists store(id serial, sname varchar(40) not null, qty integer not null, price float not null, primary key(id));
+CREATE TABLE
+practicedb=# insert into store (sname, qty, price) values ('apple', 10, 1),('pear', 5, 2),('banana', 10, 1.5),('lemon', 100, 0.1),('orange', 50, 0.2);
+INSERT 0 5
+practicedb=#  select * from store;
+ id | sname  | qty | price
+----+--------+-----+-------
+  1 | apple  |  10 |     1
+  2 | pear   |   5 |     2
+  3 | banana |  10 |   1.5
+  4 | lemon  | 100 |   0.1
+  5 | orange |  50 |   0.2
+(5 rows)
+
+practicedb=#
+practicedb=#
+practicedb=#
+practicedb=#
+practicedb=#
+practicedb=#  select * from store;
+ id | sname  | qty | price
+----+--------+-----+-------
+  1 | apple  |  10 |     1
+  2 | pear   |   5 |     2
+  3 | banana |  10 |   1.5
+  4 | lemon  | 100 |   0.1
+  5 | orange |  50 |   0.2
+(5 rows)
+
+practicedb=#
+practicedb=#
+practicedb=#
+practicedb=#
+practicedb=# select * from store;
+ id | sname  | qty | price
+----+--------+-----+-------
+  1 | apple  |  10 |     1
+  2 | pear   |   5 |     2
+  3 | banana |  10 |   1.5
+  4 | lemon  | 100 |   0.1
+  5 | orange |  50 |   0.2
+(5 rows)
+
+practicedb=#

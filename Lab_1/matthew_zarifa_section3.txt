@@ -1,0 +1,24 @@
+Microsoft Windows [Version 10.0.19042.746]
+(c) 2020 Microsoft Corporation. All rights reserved.
+
+C:\Users\matth>cd Documents
+
+C:\Users\matth\Documents>cd GitHub
+
+C:\Users\matth\Documents\GitHub>cd MatthewGZarifa_011_Labs
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>git add .
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>git commit -m "Initial Commit"
+On branch main
+Your branch is up to date with 'origin/main'.
+
+nothing to commit, working tree clean
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>git push
+Logon failed, use ctrl+c to cancel basic credential prompt.
+Username for 'https://github.com': mZarifa
+Password for 'https://mZarifa@github.com':
+Everything up-to-date
+
+C:\Users\matth\Documents\GitHub\MatthewGZarifa_011_Labs>
