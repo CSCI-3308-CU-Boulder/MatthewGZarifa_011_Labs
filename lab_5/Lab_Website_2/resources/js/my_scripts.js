@@ -32,44 +32,68 @@ function changeColor(color)
 }
 
 
-/*
-	Football Season Stats Page:
-		loadStatsPage method:
-			parameters: none
-			
-			purpose: This method will iterate through the stats table and 
-					 do the following:
-						1. Read through each row of the table & determine which team won
-						   the game.
-						
-						2. Update the winner column to the name of the winning team.
-						
-						3. Keep track of the number of wins/losses for the Buffs.
-						
-						4. Update the second table to show the total number of wins/losses for the Buffs.
-*/
 
-/*
-	Football Player Information Page
-		loadPlayersPage method:
-			parameters: none
-			
-			purpose: This method will populate the dropdown menu to allow the 
-					 user to select which player's information to view.
-					 
-					 To handle this, you will need to iterate through the players array
-					 and do the following for each player:
-						1. Create an anchor tag
-						2. Set the href to "#", this will make sure the 
-							anchor tag doesn't change pages
-						3. Set the onclick to call switchPlayers method 
-							(this will need to pass in the index inside the players array)
-						4. Set the anchor tag's text to the player's name.
-						
-					After setting all of the anchor tags, update the innerHTML of the dropdown menu.
-					As a note, the id for the dropdown menu is player_selector.
+function loadStatsPage()
+{
+    var dubs = 0;
+    var Ls = 0;
+    var scores = document.getElementById("stats_table");
+    for(var r = 2; r < 14; r++)
+	{
+        var homScore = parseInt(scores.rows[r].cells[2].innerHTML);
+        var oppScore = parseInt(scores.rows[r].cells[3].innerHTML);
+        if(oppScore > homScore)
+		{
+            scores.rows[r].cells[4].innerHTML = scores.rows[r].cells[1].innerHTML;
+            Ls++;
+        }
+        else
+		{
+            scores.rows[r].cells[4].innerHTML = "Colorado Boulder";
+            dubs++;
+        }
+    }
+    document.getElementById("wins").innerHTML = dubs;
+    document.getElementById("losses").innerHTML = Ls;
+}
+
+
+function loadPlayersPage()
+{
+	var ele = document.getElementById("player_selector");
+	for (j = 0; j < players.length; j++)
+	{
+	  var link = document.createElement("a");
+	  link.href = "#";
+	  link.classList.add("dropdown-item");
+	  link.classList.add("player");
+	  link.text = players[j].name;
+	  link.onclick = function()
+	  {
+		switchPlayers($(this).index());
+	  }
+	  ele.appendChild(link);
+	}
+  }
 		
-		switchPlayers(playerNum) method:
+	function switchPlayers(playerNum)
+	{ 
+		var bigtable = document.getElementById("table");
+		document.getElementById('p_year').innerHTML = players[playerNum].year;
+		document.getElementById('p_major').innerHTML = players[playerNum].major;
+		var d = document.getElementById('g_played').innerHTML = players[playerNum].games_played;
+		document.getElementById('player_img').src = players[playerNum].img;
+		document.getElementById('player_img').alt = players[playerNum].alt;
+		var a = document.getElementById('p_yards').innerHTML = players[playerNum].pass_yards;
+		var b = document.getElementById('r_yards').innerHTML = players[playerNum].rushing_yards;
+		var c = document.getElementById('rec_yards').innerHTML = players[playerNum].receiving_yards;
+		document.getElementById('avg_p_yards').innerHTML = a/d;
+		document.getElementById('avg_r_yards').innerHTML = b/d;
+		document.getElementById('avg_rec_yards').innerHTML =c/d;
+
+
+	}
+	/*
 			parameters: 
 				playerNum - The index of the football player in the players array.
 			
