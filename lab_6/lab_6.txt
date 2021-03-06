@@ -1,0 +1,140 @@
+postgres=# \c football_db;
+You are now connected to database "football_db" as user "postgres".
+football_db=# \dt
+              List of relations
+ Schema |       Name       | Type  |  Owner
+--------+------------------+-------+----------
+ public | football_games   | table | postgres
+ public | football_players | table | postgres
+(2 rows)
+
+football_db=# CREATE TABLE competing_uni(
+football_db(# university_name VARCHAR(200), /* Name of the uni */
+football_db(# date_established DATE NOT NULL /*date of the uni */
+football_db(# address VARCHAR(200), /*address of the uni */
+football_db(# student_population INT NOT NULL, /*student population */
+football_db(# acceptance_rate DECIMAL,
+football_db(# PRIMARY KEY(university_name)
+football_db(# );
+ERROR:  syntax error at or near "address"
+LINE 4: address VARCHAR(200), /*address of the uni */
+        ^
+football_db=# CREATE TABLE competing_uni(
+university_name VARCHAR(200), /* Name of the uni */
+date_established DATE NOT NULL, /*date of the uni */
+address VARCHAR(200), /*address of the uni */
+student_population INT NOT NULL, /*student population */
+acceptance_rate DECIMAL,
+PRIMARY KEY(university_name)
+);
+CREATE TABLE
+football_db=# \dt
+              List of relations
+ Schema |       Name       | Type  |  Owner
+--------+------------------+-------+----------
+ public | competing_uni    | table | postgres
+ public | football_games   | table | postgres
+ public | football_players | table | postgres
+(3 rows)
+
+football_db=# INSERT INTO competing_uni(university_name, date_established, address, student_population, acceptance_rate)
+VALUES('CU Boulder', '1876,04/01', '1100 28th St, Boulder, CO 80303', 35000, .8);
+INSERT 0 1
+football_db=#football_db=# TABLE competing_uni;
+ university_name | date_established |             address             | student_population | acceptance_rate
+-----------------+------------------+---------------------------------+--------------------+-----------------
+ CU Boulder      | 1876-04-01       | 1100 28th St, Boulder, CO 80303 |              35000 |             0.8
+(1 row)
+
+football_db=# SELECT name, major FROM football_players ORDER BY major ASC;
+       name        | major
+-------------------+-------
+ Cedric Vega       | ARTS
+ Wade Farmer       | ARTS
+ Erick Graves      | ARTS
+ Jared Castillo    | ARTS
+ Doyle Huff        | CSCI
+ Myron Walters     | CSCI
+ Charles Porter    | CSCI
+ Melba Pope        | MATH
+ Rafael Boreous    | MATH
+ Javier Washington | MATH
+(10 rows)
+
+football_db=# SELECT name, rushing_yards FROM football_players WHERE rushing_yards > 69;
+      name      | rushing_yards
+----------------+---------------
+ Erick Graves   |            78
+ Charles Porter |           102
+ Rafael Boreous |           111
+ Jared Castillo |           113
+(4 rows)
+
+football_db=# SELECT visitor_name, home_score, visitor_score, game_date, players FROM football_games where visitor_name='Nebraska';
+ visitor_name | home_score | visitor_score | game_date  |   players
+--------------+------------+---------------+------------+-------------
+ Nebraska     |         33 |            28 | 2020-09-08 | {2,3,4,5,6}
+(1 row)
+
+football_db=# SELECT visitor_name, home_score, visitor_score, game_date, players FROM football_games WHERE home_score > visitor_score;
+  visitor_name  | home_score | visitor_score | game_date  |   players
+----------------+------------+---------------+------------+-------------
+ Colorado State |         45 |            13 | 2020-08-31 | {1,2,3,4,5}
+ Nebraska       |         33 |            28 | 2020-09-08 | {2,3,4,5,6}
+ New Hampshire  |         45 |            14 | 2020-09-15 | {3,4,5,6,7}
+ UCLA           |         38 |            16 | 2020-09-28 | {4,5,6,7,8}
+ Arizona State  |         28 |            21 | 2020-10-06 | {5,6,7,8,9}
+(5 rows)
+
+football_db=# SELECT visitor_name, game_date FROM football_games WHERE '20200901' < game_date;
+    visitor_name     | game_date
+---------------------+------------
+ Nebraska            | 2020-09-08
+ New Hampshire       | 2020-09-15
+ UCLA                | 2020-09-28
+ Arizona State       | 2020-10-06
+ Southern California | 2020-10-13
+ Washington          | 2020-10-20
+ Oregon State        | 2020-10-27
+ Arizona             | 2020-11-02
+ Washington State    | 2020-11-10
+ Utah                | 2020-11-17
+ California          | 2020-11-24
+(11 rows)
+
+football_db=# SELECT AVG(home_score) FROM football_games;
+         avg
+---------------------
+ 27.0833333333333333
+(1 row)
+
+football_db=# select major, count(*) from football_players group by major;
+ major | count
+-------+-------
+ CSCI  |     3
+ ARTS  |     4
+ MATH  |     3
+(3 rows)
+
+football_db=# select major, count(*) from football_players group by major HAVING major='CSCI';
+ major | count
+-------+-------
+ CSCI  |     3
+(1 row)
+
+football_db=# create view winning_games2 as select count (home_score)AS "winning_games" from football_games where home_s
+core > visitor_score;
+CREATE VIEW
+football_db=# select * from winning_games2;
+ winning_games
+---------------
+             5
+(1 row)
+
+football_db=# create view total_games as select count (home_score)AS "games" from football_games;
+CREATE VIEW
+football_db=# select * from total_games;
+ games
+-------
+    12
+(1 row)
