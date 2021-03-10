@@ -138,3 +138,13 @@ football_db=# select * from total_games;
 -------
     12
 (1 row)
+
+football_db=# create view winning_games5 AS select sum (case when visitor_score < home_score then 1 end) as winning_game
+s5 from football_games;
+CREATE VIEW
+football_db=# select * from winning_games5;
+ winning_games5
+----------------
+              5
+(1 row)
+
