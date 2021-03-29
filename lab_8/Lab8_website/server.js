@@ -13,7 +13,7 @@ app.use(express.static(__dirname + '/'));// Set the relative path; makes accessi
 
 
 // Home page - DON'T CHANGE
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
   res.render('pages/NYTimes_home', {
     my_title: "NYTimes search",
     items: '',
@@ -24,37 +24,43 @@ app.get('/', function(req, res) {
 
 //to request data from API for given search criteria
 //TODO: You need to edit the code for this route to search for movie reviews and return them to the front-end
-app.post('/get_feed', function(req, res) {
-  var title = null; //TODO: Remove null and fetch the param (e.g, req.body.param_name); Check the NYTimes_home.ejs file or console.log("request parameters: ", req) to determine the parameter names
-  var api_key = null; // TOOD: Remove null and replace with your API key you received at the setup
+app.post('/get_feed', function (req, res) {
+  var title = req.body.title; //TODO: Remove null and fetch the param (e.g, req.body.param_name); Check the NYTimes_home.ejs file or console.log("request parameters: ", req) to determine the parameter names
+  var api_key = 'o83xvruVoMXXVb03gX0xZT4oNDrAZpZk';
 
-  if(title) {
+  if (title) {
     axios({
-      url: `https://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${title}&api-key=${api_key}`,
-        method: 'GET',
-        dataType:'json',
-      })
+      url: `http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=${title}&api-key=${api_key}`,
+      method: 'GET',
+      dataType: 'json',
+    })
       .then(items => {
-        console.log(items);
-        console.log(items.data.results);
-        for(var i=0; i < items.data.results.length; i++) {
-          console.log(items.data.results[i]);
-        }
+        res.render('pages/NYTimes_home', {
+          my_title: "NYTimes Movie Reviews",
+          items: items.data.results,
+          error: false,
+          message: ''
+        })
       })
       .catch(error => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-        }
+        res.render('pages/NYTimes_home', {
+          my_title: "NYTimes Movie Reviews",
+          items: '',
+          error: true,
+          message: 'Error with NYT API.'
+        })
       });
-      
   }
+
   else {
-    // TODO: Render the home page and include an error message (e.g., res.render(...);); Why was there an error? When does this code get executed? Look at the if statement above
-    // Stuck? On the web page, try submitting a search query without a search term
+    res.render('pages/NYTimes_home', {
+      my_title: "NYTimes Movie Reviews",
+      items: '',
+      error: true,
+      message: 'Invalid search term'
+    })
   }
 });
-
 
 app.listen(3000);
 console.log('3000 is the magic port');
